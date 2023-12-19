@@ -1,0 +1,114 @@
+* {
+  background-color: rgb(75, 154, 238);
+  text-align: center;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li {
+  margin: 20px;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.btn {
+  width: 160px;
+  height: 45px;
+  text-align: center;
+  border-radius: 15px;
+  border: 1px rgb(212, 98, 212);
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.btn-success {
+  background-color: green;
+}
+.btn-success a {
+  background-color: green;
+}
+
+.btn:hover {
+  animation: 500ms ease-in-out;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: rgb(212, 98, 212);
+}
+.btn-primary a {
+  background-color: rgb(212, 98, 212);
+}
+
+.btn-primary:hover {
+  background-color: purple;
+}
+.btn-primary:hover a {
+  background-color: purple;
+}
+
+.btn-secondary {
+  background-color: rgb(182, 100, 45);
+}
+.btn-secondary a {
+  background-color: rgb(182, 100, 45);
+}
+
+.btn-tertiary {
+  background-color: rgb(214, 161, 62);
+}
+.btn-tertiary a {
+  background-color: rgb(214, 161, 62);
+}
+
+.content .logo {
+  font-size: 1.8em;
+  margin-top: 60px;
+}
+.content .logo span {
+  color: purple;
+  font-weight: bolder;
+}
+.content .home:hover {
+  color: purple;
+}
+.content .subtitle {
+  font-size: 1.5em;
+}
+.content .subtitle span {
+  font-size: 1.4em;
+  font-weight: bolder;
+  text-decoration: none;
+}
+.content .list {
+  margin: 50px auto;
+}
+.content .list .item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 600px;
+  margin: 15px auto;
+}
+.content .list .item span {
+  margin: -3px 5px auto 5px;
+  font-weight: bold;
+}
+.content .list .actions {
+  margin: 10px auto;
+}
+.content .select {
+  height: 30px;
+  width: auto;
+  margin: 5px auto;
+}
+.content .main {
+  width: auto;
+}/*# sourceMappingURL=main.css.map */
