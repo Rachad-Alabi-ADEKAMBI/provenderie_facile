@@ -53,6 +53,22 @@ include '../api/api.php'; ?>
                         </select> <br>
 
 
+                        <select class='select' name="item3" id="">
+                            <option value="">Veuillez sélectionner</option>
+                            <?php
+                            $req = $pdo->prepare("SELECT * FROM
+                            items");
+                            $req->execute();
+
+                            while ($datas = $req->fetch()) { ?>
+                            <option value="<?php echo $datas[
+                                'name'
+                            ]; ?>"> <?php echo $datas['name']; ?> </option>
+                            <?php }
+                            ?>
+                        </select> <br>
+
+
                     </div>
 
                     <br>

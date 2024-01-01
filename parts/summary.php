@@ -5,6 +5,7 @@ include '../api/api.php';
 $i = $_SESSION['formula']['total'];
 $item1 = $_SESSION['formula']['item1'];
 $item2 = $_SESSION['formula']['item2'];
+$item3 = $_SESSION['formula']['item3'];
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +43,10 @@ $item2 = $_SESSION['formula']['item2'];
 
                         <li>
                             <?= $item2 ?>
+                        </li>
+
+                        <li>
+                            <?= $item3 ?>
                         </li>
                     </ul>
                 </div>
