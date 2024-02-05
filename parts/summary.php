@@ -59,7 +59,7 @@ $item3 = $_SESSION['formula']['item3'];
                     </button>
 
                     <button class='btn btn-success'>
-                        <a href="http://127.0.0.1/provenderie/api/calculate">
+                        <a href="http://127.0.0.1/provenderie/api/traitement.php">
                             Finaliser
                         </a>
                     </button>

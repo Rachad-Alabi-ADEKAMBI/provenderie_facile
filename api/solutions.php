@@ -1,3 +1,4 @@
+<?php
 function calculate()
 {
 //var_dump($_SESSION['formula']);
@@ -98,7 +99,6 @@ $item2Qty = 0;
 $item3Qty = 0;
 
 // Assuming you have defined $item1, $item1A, $item1B, $item2, $item2A, $item2B, $item3, $item3A, $item3B somewhere
-before this code
 
 echo 'Ingrédient 1: <br>';
 echo $item1 .

@@ -1,92 +1,16 @@
-<?php
-// Given values
-$neededEnergy = 100; // Replace with the actual value
-$neededProtein = 50; // Replace with the actual value
+from scipy.optimize import minimize
 
-$protein1 = 10; // Replace with the actual value
-$protein2 = 20; // Replace with the actual value
-$protein3 = 15; // Replace with the actual value
-$protein4 = 25; // Replace with the actual value
+# Définir la fonction objectif à minimiser
+def objective_function(variables):
+x, y, z = variables
+# Fonction à minimiser - dans ce cas, la somme des carrés des différences entre les équations
+return (x + y + z - 10)**2 + (x - 4)**2 + (y - 6.5)**2 + (z - 7.5)**2
 
-$energy1 = 5; // Replace with the actual value
-$energy2 = 15; // Replace with the actual value
-$energy3 = 10; // Replace with the actual value
-$energy4 = 20; // Replace with the actual value
-
-// Define the range for each valueItem
-$valueItem1A = 0;
-$valueItem1B = 50;
-
-$valueItem2A = 10;
-$valueItem2B = 60;
-
-$valueItem3A = 20;
-$valueItem3B = 70;
-
-$valueItem4A = 5;
-$valueItem4B = 55;
-
-// Increment step size
-$incrementStep = 1;
-
-// Loop to calculate values within the specified range
-for (
-    $valueItem1 = $valueItem1A;
-    $valueItem1 <= $valueItem1B;
-    $valueItem1 += $incrementStep
-) {
-    for (
-        $valueItem2 = $valueItem2A;
-        $valueItem2 <= $valueItem2B;
-        $valueItem2 += $incrementStep
-    ) {
-        for (
-            $valueItem3 = $valueItem3A;
-            $valueItem3 <= $valueItem3B;
-            $valueItem3 += $incrementStep
-        ) {
-            for (
-                $valueItem4 = $valueItem4A;
-                $valueItem4 <= $valueItem4B;
-                $valueItem4 += $incrementStep
-            ) {
-                // Check if the equation is satisfied
-                if (
-                    100 ==
-                    $valueItem1 + $valueItem2 + $valueItem3 + $valueItem4
-                ) {
-                    // Calculate neededProtein and neededEnergy
-                    $calculatedProtein =
-                        ($valueItem1 * $protein1) / 100 +
-                        ($valueItem2 * $protein2) / 100 +
-                        ($valueItem3 * $protein3) / 100 +
-                        ($valueItem4 * $protein4) / 100;
-
-                    $calculatedEnergy =
-                        ($valueItem1 * $energy1) / 100 +
-                        ($valueItem2 * $energy2) / 100 +
-                        ($valueItem3 * $energy3) / 100 +
-                        ($valueItem4 * $energy4) / 100;
-
-                    // Check if the calculated values match the given values
-                    if (
-                        $calculatedProtein == $neededProtein &&
-                        $calculatedEnergy == $neededEnergy
-                    ) {
-                        // Display the values and exit the loop
-                        echo "Valid values found:\n";
-                        echo "\$valueItem1: $valueItem1\n";
-                        echo "\$valueItem2: $valueItem2\n";
-                        echo "\$valueItem3: $valueItem3\n";
-                        echo "\$valueItem4: $valueItem4\n";
-                        exit();
-                    }
-                }
-            }
-        }
-    }
-}
-
-// If no valid values are found
-echo "Unable to find valid values within the specified range.\n";
-?>
+# Définir les contraintes
+constraints = ({'type': 'ineq', 'fun': lambda x: x[0] - 3}, # 3 < x {'type': 'ineq' , 'fun' : lambda x: 5 - x[0]}, # x <
+    5 {'type': 'ineq' , 'fun' : lambda x: x[1] - 4}, # 4 < y {'type': 'ineq' , 'fun' : lambda x: 9 - x[1]}, # y < 9
+    {'type': 'ineq' , 'fun' : lambda x: x[2] - 3}, # 3 < z {'type': 'ineq' , 'fun' : lambda x: 12 - x[2]}, # z < 12
+    {'type': 'eq' , 'fun' : lambda x: x[0] + x[1] + x[2] - 10}) # x + y + z=10 # Spécifier les valeurs initiales
+    initial_guess=[3, 4, 3] # Utiliser le solveur d'équations non linéaires result=minimize(objective_function,
+    initial_guess, constraints=constraints) # Afficher les résultats print("Valeurs optimales pour x, y et z :",
+    result.x)

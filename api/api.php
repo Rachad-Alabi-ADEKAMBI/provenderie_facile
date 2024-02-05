@@ -247,29 +247,29 @@ function calculate()
         }
     }
 
-    //item3
+   //item3
     $item3 = $_SESSION['formula']['item3'];
-    $req = $pdo->prepare("SELECT * FROM
-items WHERE name = '$item3'");
+    $req = $pdo->prepare("SELECT * FROM items WHERE name = '$item3'");
     $req->execute();
     while ($datas = $req->fetch()) {
-        $protein2 = $datas['protein'];
-        $energy2 = $datas['energy'];
+    $protein3 = $datas['protein']; // Correct variable names
+    $energy3 = $datas['energy'];   // Correct variable names
 
-        if ($level == 'demarrage') {
-            $item3A = $datas['demarrage1'];
-            $item3B = $datas['demarrage2'];
-        } elseif ($level == 'croissance') {
-            $item3A = $datas['croissance1'];
-            $item3B = $datas['croissance2'];
-        } elseif ($level == 'pondeuses') {
-            $item3A = $datas['pondeuses1'];
-            $item3B = $datas['pondeuses2'];
-        } else {
-            $item3A = $datas['reproducteurs1'];
-            $item3B = $datas['reproducteurs2'];
-        }
+    if ($level == 'demarrage') {
+        $item3A = $datas['demarrage1'];
+        $item3B = $datas['demarrage2'];
+    } elseif ($level == 'croissance') {
+        $item3A = $datas['croissance1'];
+        $item3B = $datas['croissance2'];
+    } elseif ($level == 'pondeuses') {
+        $item3A = $datas['pondeuses1'];
+        $item3B = $datas['pondeuses2'];
+    } else {
+        $item3A = $datas['reproducteurs1'];
+        $item3B = $datas['reproducteurs2'];
     }
+}
+
 
     $item1Qty = 0;
     $item2Qty = 0;
