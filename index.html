@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Provenderie Facile - Accueil</title>
+    <link rel="stylesheet" href="http://127.0.0.1/provenderie/public/css/main.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+</head>
+
+<body>
+    <div class="content">
+        <header class="header">
+            <div class="logo">
+                PROVENDERIE <span>
+                    FACILE
+                </span>
+            </div> <br>
+
+            <div class="home">
+                <a href="../index.php">
+                    Accueil
+                </a>
+            </div>
+        </header>
+
+        <div class="main">
+            <h2>Formulaire d'Insertion</h2>
+                <div class="list">
+                    <h1 class="subtitle">Nouvelle formule</h1> <br>
+
+                    <form action="/submit" method="post">
+                        <label for="id">Subject :</label> <br><br>
+                        <select class="select" name="subject" id="" required>
+                            <option value="">Veuillez sélectionner</option>
+                            <option value="Poussins">Poussins</option>
+                            <option value="Pondeuses">Pondeuses</option>
+                            <option value="Chair demarrage">Chair demarrage</option>
+                        </select><br> <br>
+
+                        <input type="submit" value="Go !!" class='btn btn-success'>
+                    </form>
+                </div>
+        </div>
+    </div>
+</body>
+
+</html>
