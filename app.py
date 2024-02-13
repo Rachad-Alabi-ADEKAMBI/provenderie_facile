@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder='.')
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': '',
+    'password': '  ',
     'database': 'provenderie'
 }
 
