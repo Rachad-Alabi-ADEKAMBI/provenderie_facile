@@ -132,6 +132,7 @@ a{
 
     .list{
         margin: 50px auto;
+        text-align: left;
 
         .item{
             display: flex;
@@ -144,6 +145,10 @@ a{
                 margin: -3px 5px auto 5px;
                 font-weight: bold;
             }
+        }
+
+        input{
+            margin-right: 15px;
         }
 
         .actions{

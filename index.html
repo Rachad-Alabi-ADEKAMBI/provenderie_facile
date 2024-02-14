@@ -28,22 +28,43 @@
         </header>
 
         <div class="main">
-            <h2>Formulaire d'Insertion</h2>
-                <div class="list">
-                    <h1 class="subtitle">Nouvelle formule</h1> <br>
-
-                    <form action="/submit" method="post">
-                        <label for="id">Subject :</label> <br><br>
-                        <select class="select" name="subject" id="" required>
-                            <option value="">Veuillez sélectionner</option>
-                            <option value="poussins">Poussins</option>
-                            <option value="pondeuses">Pondeuses</option>
-                            <option value="chair demarrage">Chair démarrage</option>
-                        </select><br> <br>
-
-                        <input type="submit" value="Go !!" class='btn btn-success'>
-                    </form>
+            <form action="/submit" method="post">
+                <div class="">
+                    <h2>Choix du sujet</h2>
+                    <label for="subject">Sujet :</label> <br><br>
+                    <select class="select" name="subject" id="subject" required>
+                        <option value="">Veuillez sélectionner</option>
+                        <option value="poussins">Poussins</option>
+                        <option value="pondeuses">Pondeuses</option>
+                        <option value="chair demarrage">Chair démarrage</option>
+                    </select><br> <br>
                 </div>
+
+                <div class="">
+                    <h2>Choix des matières</h2>
+                    <div class="list">
+                        <label for="mais">
+                            <input type="checkbox" name="items" id="mais" value="mais" /> Mais
+                        </label> <br>
+
+                        <label for="soja">
+                            <input type="checkbox" name="items" id="soja" value="farinesoja" /> Farine de soja
+                        </label> <br>
+
+                        <label for="dreche">
+                            <input type="checkbox" name="items" id="dreche" value="drechebrasserie" /> Drèche de brasserie
+                        </label> <br>
+
+                        <label for="sel">
+                            <input type="checkbox" name="items" id="sel" value="sel" /> Sel
+                        </label> <br>
+                    </div>
+                </div>
+
+                <br>
+                <input type="submit" value="Go !!" class='btn btn-success'>
+            </form>
+
         </div>
     </div>
 </body>

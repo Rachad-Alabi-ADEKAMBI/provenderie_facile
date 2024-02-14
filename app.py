@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from bs4 import BeautifulSoup
 import mysql.connector
 
 app = Flask(__name__, template_folder='.')
@@ -18,13 +19,13 @@ db_config = {
 def formulaire():
     return render_template('index.html')
 
-# Route pour traiter le formulaire
-
 
 @app.route('/submit', methods=['POST'])
 def soumettre_formulaire():
     # Récupérer les données du formulaire
     subject = request.form['subject']
+
+    items = request.form['items']
 
     # Connexion à la base de données
     connection = mysql.connector.connect(**db_config)
@@ -40,8 +41,20 @@ def soumettre_formulaire():
     connection.close()
 
     if result:
-        level = result[7]  # Index 7 corresponds to the 'demarrage' value
-        return 'Détails du sujet: ' + str(level)
+        protein1 = result[3]
+        protein2 = result[4]
+        energy1 = result[5]
+        energy2 = result[6]
+        level = result[7]
+
+        if level == 'demarrage':
+            return items
+
+        elif level == 'pondeuses':
+            return '2'
+        elif level == 'croissance':
+            return '3'
+        # return str(energy1)
     else:
         return 'Sujet non trouvé.'
 

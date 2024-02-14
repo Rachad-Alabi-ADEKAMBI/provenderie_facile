@@ -89,6 +89,7 @@ a {
 }
 .content .list {
   margin: 50px auto;
+  text-align: left;
 }
 .content .list .item {
   display: flex;
@@ -100,6 +101,9 @@ a {
 .content .list .item span {
   margin: -3px 5px auto 5px;
   font-weight: bold;
+}
+.content .list input {
+  margin-right: 15px;
 }
 .content .list .actions {
   margin: 10px auto;
