@@ -1,18 +1,14 @@
-from flask import Flask, render_template, request
-from bs4 import BeautifulSoup
+from flask import Flask, render_template, request, jsonify
 import mysql.connector
 
 app = Flask(__name__, template_folder='.')
 
-# Configuration de la base de données
 db_config = {
     'host': 'localhost',
     'user': 'root',
     'password': '',
     'database': 'provenderie'
 }
-
-# Route pour afficher le formulaire
 
 
 @app.route('/')
@@ -22,41 +18,43 @@ def formulaire():
 
 @app.route('/submit', methods=['POST'])
 def soumettre_formulaire():
-    # Récupérer les données du formulaire
-    subject = request.form['subject']
+    if request.method == 'POST':
+        subject = request.form['subject']
+        checkbox_values = request.form.getlist('checkbox')
 
-    items = request.form['items']
+        if not checkbox_values:
+            error_message = 'At least one checkbox must be selected.'
+            return render_template('index.html', error_message=error_message)
 
-    # Connexion à la base de données
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor()
+        # Get subjects
+        connection = mysql.connector.connect(**db_config)
+        # Use dictionary cursor for easier result access
+        cursor = connection.cursor(dictionary=True)
 
-    # Exécuter la requête SQL
-    query = 'SELECT * FROM subjects WHERE namee = %s'
-    cursor.execute(query, (subject,))
-    result = cursor.fetchone()
+        # Execute SQL query
+        query = 'SELECT * FROM subjects WHERE namee = %s'
+        cursor.execute(query, (subject,))
+        result = cursor.fetchone()
 
-    # Fermer la connexion
-    cursor.close()
-    connection.close()
+        cursor.close()
+        connection.close()
 
-    if result:
-        protein1 = result[3]
-        protein2 = result[4]
-        energy1 = result[5]
-        energy2 = result[6]
-        level = result[7]
+        # Check if a result was found
+        if result:
+            protein1 = result.get('protein1')
+            protein2 = result.get('protein2')
+            energy1 = result.get('energy1')
+            energy2 = result.get('energy2')
+            level = result.get('level')
 
-        if level == 'demarrage':
-            return items
-
-        elif level == 'pondeuses':
-            return '2'
-        elif level == 'croissance':
-            return '3'
-        # return str(energy1)
-    else:
-        return 'Sujet non trouvé.'
+            if level == 'demarrage':
+                return 'd'
+            elif level == 'croissance':
+                return 'c'
+            else:
+                return jsonify(result)
+        else:
+            return jsonify({'message': 'Subject not found'})
 
 
 if __name__ == '__main__':
