@@ -1,83 +1,111 @@
+from flask import Flask, render_template, request, jsonify
+import mysql.connector
 from scipy.optimize import minimize
-import sys
-import sqlite3
+from decimal import Decimal
 
-# Récupérer les données passées depuis PHP
-item1 = sys.argv[1]
-item2 = sys.argv[2]
-item3 = sys.argv[3]
+app = Flask(__name__, template_folder='.')
 
-# Faire quelque chose avec les données
-print(
-    f"Données reçues du formulaire : Item 1 = {item1}, Item 2 = {item2}, Item 3 = {item3}")
+db_config = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': '',
+    'database': 'provenderie'
+}
 
-# Connect to the SQLite database
-conn = sqlite3.connect('provenderie.db')
-cursor = conn.cursor()
 
-# Retrieve subject data
-subject = "poussins"
-cursor.execute(f"SELECT * FROM subjects WHERE name = ? LIMIT 1", (subject,))
-subject_data = cursor.fetchone()
+@app.route('/')
+def formulaire():
+    return render_template('index.html')
 
-if subject_data:
-    needed_protein1, needed_protein2, needed_protein, needed_energy, needed_energy1, needed_energy2, level = subject_data
 
-    # Retrieve item1 data
-    cursor.execute(f"SELECT * FROM items WHERE name = ? LIMIT 1", (item1,))
-    item1_data = cursor.fetchone()
+@app.route('/submit', methods=['POST'])
+def soumettre_formulaire():
+    if request.method == 'POST':
+        subject = request.form['subject']
+        checkbox_values = request.form.getlist('checkbox')
 
-    if item1_data:
-        protein1, energy1, item1A, item1B = item1_data[1:5]
+        if not checkbox_values:
+            error_message = 'At least one checkbox must be selected.'
+            return render_template('index.html', error_message=error_message)
 
-    # Retrieve item2 data
-    cursor.execute(f"SELECT * FROM items WHERE name = ? LIMIT 1", (item2,))
-    item2_data = cursor.fetchone()
+        # Get subjects
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
 
-    if item2_data:
-        protein2, energy2, item2A, item2B = item2_data[1:5]
+        query = 'SELECT * FROM subjects WHERE namee = %s'
+        cursor.execute(query, (subject,))
+        result = cursor.fetchone()
 
-    # Retrieve item3 data
-    cursor.execute(f"SELECT * FROM items WHERE name = ? LIMIT 1", (item3,))
-    item3_data = cursor.fetchone()
+        cursor.close()
+        connection.close()
 
-    if item3_data:
-        protein3, energy3, item3A, item3B = item3_data[1:5]
+        if result:
+            total = 100
+            level = result.get('level')
 
-    # Close the database connection
-    conn.close()
+            # Get item values for each checkbox
+            items_qty_min = []
+            items_qty_max = []
 
-    # Define the objective function to minimize
-    def objective_function(variables):
-        x, y, z = variables
-        return (x + y + z - 10)**2 + (x - item1A)**2 + (y - item2A)**2 + (z - item3A)**2
+            for item in checkbox_values:
+                connection = mysql.connector.connect(**db_config)
+                cursor = connection.cursor(dictionary=True)
 
-    # Define the constraints
-    constraints = [
-        {'type': 'ineq', 'fun': lambda x: x[0] - item1A},
-        {'type': 'ineq', 'fun': lambda x: item1B - x[0]},
-        {'type': 'ineq', 'fun': lambda x: x[1] - item2A},
-        {'type': 'ineq', 'fun': lambda x: item2B - x[1]},
-        {'type': 'ineq', 'fun': lambda x: x[2] - item3A},
-        {'type': 'ineq', 'fun': lambda x: item3B - x[2]},
-        {'type': 'eq', 'fun': lambda x: x[0] + x[1] + x[2] - 10}
-    ]
+                query = 'SELECT * FROM items WHERE name = %s'
+                cursor.execute(query, (item,))
+                item_values = cursor.fetchone()
 
-    # Specify initial values
-    initial_guess = [(item1A + item1B) / 2, (item2A +
-                                             item2B) / 2, (item3A + item3B) / 2]
+                cursor.close()
+                connection.close()
 
-    # Use the nonlinear equations solver
-    result = minimize(objective_function, initial_guess,
-                      constraints=constraints)
+                if level == 'demarrage':
+                    items_qty_min.append(item_values['demarrage1'])
+                    items_qty_max.append(item_values['demarrage2'])
+                elif level == 'croissance':
+                    items_qty_min.append(item_values['croissance1'])
+                    items_qty_max.append(item_values['croissance2'])
+                elif level == 'pondeuses':
+                    items_qty_min.append(item_values['pondeuses1'])
+                    items_qty_max.append(item_values['pondeuses2'])
+                else:
+                    return jsonify(result)
 
-    # Display the results in a more readable format (e.g., JSON)
-    results_dict = {
-        "Optimal_values": {
-            "x": result.x[0],
-            "y": result.x[1],
-            "z": result.x[2]
-        }
-    }
+            # Math
+            def objective_function(variables):
+                return sum(
+                    (float(variables[i]) - float(items_qty_min[i]))**2 +
+                    (float(items_qty_max[i]) - float(variables[i]))**2
+                    for i in range(len(variables))
+                ) + (sum(map(float, variables)) - total)**2
 
-    print(results_dict)
+            # Define the constraints
+            constraints = []
+
+            for i in range(len(checkbox_values)):
+                constraints.append(
+                    {'type': 'ineq', 'fun': lambda x, i=i: x[i] - float(items_qty_min[i])})
+                constraints.append(
+                    {'type': 'ineq', 'fun': lambda x, i=i: float(items_qty_max[i]) - x[i]})
+
+            # Add the equality constraint
+            constraints.append({'type': 'eq', 'fun': lambda x: sum(x) - total})
+
+            # Specify initial values
+            initial_guess = [float((float(items_qty_min[i]) + float(items_qty_max[i])) / 2)
+                             for i in range(len(checkbox_values))]
+
+            # Use the nonlinear solver
+            result = minimize(objective_function,
+                              initial_guess, constraints=constraints)
+
+            # Display the results
+            print("Optimal values for item quantities:", result.x)
+
+            return jsonify({'message': 'Optimization successful'})
+
+        else:
+            return jsonify({'message': 'Subject not found'})
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
