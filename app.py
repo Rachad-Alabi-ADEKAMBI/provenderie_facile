@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import mysql.connector
 from scipy.optimize import minimize
-from decimal import Decimal
 
 app = Flask(__name__, template_folder='.')
 
@@ -72,11 +71,12 @@ def soumettre_formulaire():
 
             # Math
             def objective_function(variables):
+                total_difference = sum(map(float, variables)) - total
                 return sum(
                     (float(variables[i]) - float(items_qty_min[i]))**2 +
                     (float(items_qty_max[i]) - float(variables[i]))**2
                     for i in range(len(variables))
-                ) + (sum(map(float, variables)) - total)**2
+                ) + total_difference**2
 
             # Define the constraints
             constraints = []
@@ -87,7 +87,7 @@ def soumettre_formulaire():
                 constraints.append(
                     {'type': 'ineq', 'fun': lambda x, i=i: float(items_qty_max[i]) - x[i]})
 
-            # Add the equality constraint
+            # Add the equality constraint for total
             constraints.append({'type': 'eq', 'fun': lambda x: sum(x) - total})
 
             # Specify initial values
@@ -98,10 +98,11 @@ def soumettre_formulaire():
             result = minimize(objective_function,
                               initial_guess, constraints=constraints)
 
-            # Display the results
-            print("Optimal values for item quantities:", result.x)
+            # Display the results with one decimal point
+            rounded_result = [round(val, 1) for val in result.x]
+            print("Optimal values for item quantities:", rounded_result)
 
-            return jsonify({'message': 'Optimization successful'})
+            return jsonify({'optimal_values': rounded_result, 'message': 'Optimization successful'})
 
         else:
             return jsonify({'message': 'Subject not found'})
