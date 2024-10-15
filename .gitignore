@@ -1,0 +1,4 @@
+miscellaneous/
+node_modules/
+.vscode/
+*.pyc

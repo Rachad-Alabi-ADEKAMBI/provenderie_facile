@@ -1,0 +1,133 @@
+html, body {
+  text-align: center;
+  padding: 0;
+  background-color: rgb(75, 154, 238);
+}
+
+ul {
+  list-style: none;
+}
+
+ul li {
+  margin: 20px;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.btn {
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+/*
+.btn-success{
+    background-color: $green;
+
+    a{
+        background-color: $green;
+    }
+}
+
+.btn-success:hover{
+  //  background-color: $green-dark;
+
+    a{
+     //   background-color: $green-dark;
+    }
+}
+
+.btn:hover{
+    animation: 500ms ease-in-out;
+  //  background-color: $purple-dark;
+    font-weight: 500;
+}
+
+.btn-primary{
+    background-color: $purple-clear;
+
+    a{
+        background-color: $purple-clear;
+    }
+}
+
+.btn-primary:hover{
+    background-color: $purple-dark;
+    a{
+        background-color: $purple-dark;
+    }
+}
+
+.btn-secondary{
+    background-color: $orange;
+
+    a{
+        background-color: $orange;
+    }
+}
+
+
+.btn-tertiary{
+    background-color: $yellow;
+    a{
+        background-color: $yellow;
+    }
+}
+
+.btn-tertiary:hover{
+    a{
+
+    }
+}
+
+*/
+.content {
+  max-height: 100vh;
+}
+.content .logo {
+  font-size: 1.8em;
+  margin-top: 60px;
+}
+.content .logo span {
+  color: purple;
+  font-weight: bolder;
+}
+.content .home:hover {
+  color: purple;
+}
+.content .subtitle {
+  font-size: 1.5em;
+}
+.content .subtitle span {
+  font-size: 1.4em;
+  font-weight: bolder;
+  text-decoration: none;
+}
+.content .list {
+  margin: 50px auto;
+  text-align: left;
+}
+.content .list .item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 600px;
+  margin: 15px auto;
+}
+.content .list .item span {
+  margin: -3px 5px auto 5px;
+  font-weight: bold;
+}
+.content .list input {
+  margin-right: 15px;
+}
+.content .list .actions {
+  margin: 10px auto;
+}
+.content .select {
+  height: 30px;
+  width: auto;
+  margin: 5px auto;
+}/*# sourceMappingURL=style.css.map */

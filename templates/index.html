@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <title>Provenderie Facile - Accueil</title>
+    <link rel="stylesheet" href="http://127.0.0.1/provenderie/public/css/main.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://kit.fontawesome.com/b14771b76e.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="content p-2">
+        <header class="header">
+            <div class="logo">
+                PROVENDERIE <span>FACILE</span>
+            </div> <br>
+
+            <div class="home">
+                <a href="/">Accueil</a>
+            </div>
+        </header>
+
+        <div class="main">
+            <!-- Formulaire avec la liste des sujets -->
+            <form action="/composition" method="POST">
+                <div class="">
+                    <h2>Choix du sujet</h2>
+                    <label for="subject">Sujet :</label> <br><br>
+                    <select class="select" name="subject" id="subject" required>
+                        <option value="">Veuillez sélectionner</option>
+                        <!-- Les options dynamiques seront ajoutées ici -->
+                    </select><br><br>
+                </div>
+
+                <br>
+                <input type="submit" value="Gooo !!" class='btn btn-success'>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour récupérer les sujets via l'API Flask
+        async function fetchSubjects() {
+            try {
+                const response = await fetch('/subjects');  // Appelle l'endpoint Flask
+                const subjects = await response.json();    // Récupère les données en JSON
+                
+                const select = document.getElementById('subject'); // Sélectionne l'élément <select>
+
+                // Parcourt les sujets et crée une option pour chacun
+                subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.name;  // Utiliser 'name' comme valeur
+                    option.textContent = subject.name;
+                    select.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erreur lors de la récupération des sujets:', error);
+            }
+        }
+
+        // Appelle la fonction dès que la page est chargée
+        document.addEventListener('DOMContentLoaded', fetchSubjects);
+    </script>
+
+</body>
+
+</html>

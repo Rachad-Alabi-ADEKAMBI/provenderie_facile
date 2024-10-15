@@ -1,6 +1,3 @@
-Voici une version améliorée pour ton fichier `README.md` :
-
----
 
 # Provenderie Facile
 
@@ -44,12 +41,18 @@ Voici une version améliorée pour ton fichier `README.md` :
    pip install -r requirements.txt
    ```
 
-4. **Lancer l'application**
+4. **Importer la base de données**
+   - Un fichier SQL de démarrage est disponible dans le dossier `sql`. Vous pouvez l'importer dans votre base de données MySQL en utilisant la commande suivante :
+     ```bash
+     mysql -u <username> -p <database_name> < sql/your_file.sql
+     ```
+
+5. **Lancer l'application**
    ```bash
    flask run
    ```
 
-5. **Accéder à l'application**  
+6. **Accéder à l'application**  
    Rendez-vous sur [http://127.0.0.1:5000](http://127.0.0.1:5000) dans votre navigateur pour accéder à l'application.
 
 ## Contribuer
@@ -61,15 +64,5 @@ Les contributions sont les bienvenues ! Si vous souhaitez apporter des améliora
 **Rachad Alabi ADEKAMBI**
 
 - [Portfolio](https://rachad-alabi-adekambi.github.io/portfolio/)
-- [LinkedIn](https://github.com/Rachad-Alabi-ADEKAMBI/)
-- [GitHub](https://www.linkedin.com/in/rachad-alabi-adekambi-2753a21b5/)
-
-## Licence
-
-Ce projet est sous licence MIT. Consultez le fichier `LICENSE` pour plus d'informations.
-# provenderie_facile
-# provenderie_facile
-# provenderie_facile
-# provenderie_facile
-# provenderie_facile
-# provenderie_facile
+- [LinkedIn](https://www.linkedin.com/in/rachad-alabi-adekambi-2753a21b5/)
+- [GitHub](https://github.com/Rachad-Alabi-ADEKAMBI/)
