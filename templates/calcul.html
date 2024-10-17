@@ -29,14 +29,36 @@
         <div class="container mt-4">
             <h2>Vous avez choisi le sujet :</h2>
             <p class="lead">{{ subject }}</p>
+
+            <p>
+                Détails du sujet :
+                <ul>
+                    {% for key, value in subject_details.items() %}
+                        <li>{{ key }}: {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </p>
+
     
             <h3>Ingrédients sélectionnés :</h3>
             <ul>
-                {% for item in items %}
-                    <li>{{ item }}</li>
+                {% for item_details in items_details %}
+                    <li>
+                        {{ item_details['name'] }} :
+                        <ul>
+                            {% for key, value in item_details.items() %}
+                                <li>{{ key }}: {{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
                 {% endfor %}
             </ul>
-    
+            
+
+            
+            
+          
+            
             <a href="/" class="btn btn-success">Revenir à l'accueil</a>
         </div>
     </main>
