@@ -39,29 +39,29 @@
                 </ul>
             </p>
 
-    
             <h3>Ingrédients sélectionnés :</h3>
             <ul>
                 {% for item_details in items_details %}
                     <li>
                         {{ item_details['name'] }} :
                         <ul>
-                            {% for key, value in item_details.items() %}
-                                <li>{{ key }}: {{ value }}</li>
-                            {% endfor %}
+                            <li>Énergie: {{ item_details['energy'] }}</li>
+                            <li>Protéine: {{ item_details['protein'] }}</li>
+                            <li>{{ item_details['level1_column'] }}: {{ item_details[item_details['level1_column']] }}</li>  <!-- Afficher le nom et la valeur de Demarrage1/Croissance1 -->
+                            <li>{{ item_details['level2_column'] }}: {{ item_details[item_details['level2_column']] }}</li>  <!-- Afficher le nom et la valeur de Demarrage2/Croissance2 -->
                         </ul>
                     </li>
                 {% endfor %}
             </ul>
             
-
             
-            
-          
             
             <a href="/" class="btn btn-success">Revenir à l'accueil</a>
         </div>
     </main>
 </body>
+
+
+
 
 </html>

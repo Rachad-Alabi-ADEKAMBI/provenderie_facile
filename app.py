@@ -84,12 +84,25 @@ def calcul():
     cursor.execute('SELECT * FROM subjects WHERE name = %s', (subject,))
     subject_details = cursor.fetchone()  # Récupérer les détails du sujet
 
+    # Récupérer la valeur du "level" du sujet
+    if subject_details and 'level' in subject_details:
+        level = subject_details['level']
+        level1_column = f"{level}1"  # Exemple: Demarrage1 ou Croissance1
+        level2_column = f"{level}2"  # Exemple: Demarrage2 ou Croissance2
+    else:
+        return render_template('calcul.html', subject=subject, items=selected_items, error="Sujet ou niveau non trouvé")
+
     # Récupérer les détails de chaque item sélectionné
     items_details = []
     for item in selected_items:
-        cursor.execute('SELECT * FROM items WHERE name = %s', (item,))
-        item_details = cursor.fetchone()  # Récupérer les détails de l'item
+        query = f'SELECT name, energy, protein, {level1_column}, {level2_column} FROM items WHERE name = %s'
+        cursor.execute(query, (item,))
+        item_details = cursor.fetchone()
+        
         if item_details:
+            # Ajouter les noms de colonnes dynamiques dans le dictionnaire
+            item_details['level1_column'] = level1_column
+            item_details['level2_column'] = level2_column
             items_details.append(item_details)
 
     cursor.close()
@@ -100,6 +113,7 @@ def calcul():
         return render_template('calcul.html', subject=subject, items=selected_items, subject_details=subject_details, items_details=items_details)
     else:
         return render_template('calcul.html', subject=subject, items=selected_items, error="Sujet non trouvé")
+
 
 
 if __name__ == '__main__':
