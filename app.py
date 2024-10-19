@@ -75,32 +75,41 @@ def composition():
 
 @app.route('/calcul', methods=['POST'])
 def calcul():
-    subject = request.form.get('subject')  # Récupérer le sujet envoyé avec le formulaire
-    selected_items = request.form.getlist('items')  # Récupérer la liste des ingrédients sélectionnés (checkboxes)
+    subject = request.form.get('subject')
+    selected_items = request.form.getlist('items')
 
-    # Connexion à la base de données pour obtenir les détails du sujet
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)  # Utilisation de dictionary=True pour retourner un dict plutôt qu'un tuple
+    cursor = conn.cursor(dictionary=True)
     cursor.execute('SELECT * FROM subjects WHERE name = %s', (subject,))
-    subject_details = cursor.fetchone()  # Récupérer les détails du sujet
+    subject_details = cursor.fetchone()
 
-    # Récupérer la valeur du "level" du sujet
     if subject_details and 'level' in subject_details:
         level = subject_details['level']
-        level1_column = f"{level}1"  # Exemple: Demarrage1 ou Croissance1
-        level2_column = f"{level}2"  # Exemple: Demarrage2 ou Croissance2
+        level1_column = f"{level}1"
+        level2_column = f"{level}2"
     else:
         return render_template('calcul.html', subject=subject, items=selected_items, error="Sujet ou niveau non trouvé")
 
     # Récupérer les détails de chaque item sélectionné
     items_details = []
+    total_quantity = 100  # Total fixe de 100 kg
+    quantity_per_item = total_quantity / len(selected_items)  # Diviser également entre les items
+
     for item in selected_items:
         query = f'SELECT name, energy, protein, {level1_column}, {level2_column} FROM items WHERE name = %s'
         cursor.execute(query, (item,))
         item_details = cursor.fetchone()
-        
+
         if item_details:
-            # Ajouter les noms de colonnes dynamiques dans le dictionnaire
+            # Arrondir la quantité à un chiffre après la virgule
+            quantity = round(quantity_per_item, 1)
+
+            # Vérifier si la quantité est entière (par exemple 40.0 doit devenir 40)
+            if quantity.is_integer():
+                item_details['quantity'] = int(quantity)  # Afficher comme entier
+            else:
+                item_details['quantity'] = quantity  # Afficher avec un chiffre après la virgule
+
             item_details['level1_column'] = level1_column
             item_details['level2_column'] = level2_column
             items_details.append(item_details)
@@ -108,12 +117,7 @@ def calcul():
     cursor.close()
     conn.close()
 
-    if subject_details:
-        # Passer les détails du sujet et des items à la page HTML
-        return render_template('calcul.html', subject=subject, items=selected_items, subject_details=subject_details, items_details=items_details)
-    else:
-        return render_template('calcul.html', subject=subject, items=selected_items, error="Sujet non trouvé")
-
+    return render_template('calcul.html', subject=subject, items=selected_items, subject_details=subject_details, items_details=items_details)
 
 
 if __name__ == '__main__':

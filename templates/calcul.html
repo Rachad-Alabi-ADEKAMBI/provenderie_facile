@@ -25,40 +25,63 @@
         </header>
     </div>
 
-    <main class="main">
-        <div class="container mt-4">
-            <h2>Vous avez choisi le sujet :</h2>
-            <p class="lead">{{ subject }}</p>
+        <main class="main">
+            <div class="container mt-4">
+                <h2>Vous avez choisi le sujet :</h2>
+                <p class="lead">{{ subject }}</p>
 
-            <p>
-                Détails du sujet :
+                <p>
+                    Détails du sujet :
+                    <ul>
+                        {% for key, value in subject_details.items() %}
+                            <li>{{ key }}: {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                </p>
+
+                <h3>Ingrédients sélectionnés :</h3>
                 <ul>
-                    {% for key, value in subject_details.items() %}
-                        <li>{{ key }}: {{ value }}</li>
+                    {% for item_details in items_details %}
+                        <li>
+                            {{ item_details['name'] }} :
+                            <ul>
+                                <li>Énergie: {{ item_details['energy'] }}</li>
+                                <li>Protéine: {{ item_details['protein'] }}</li>
+                                <li>{{ item_details['level1_column'] }}: {{ item_details[item_details['level1_column']] }}</li>  <!-- Afficher le nom et la valeur de Demarrage1/Croissance1 -->
+                                <li>{{ item_details['level2_column'] }}: {{ item_details[item_details['level2_column']] }}</li>  <!-- Afficher le nom et la valeur de Demarrage2/Croissance2 -->
+                            </ul>
+                        </li>
                     {% endfor %}
                 </ul>
-            </p>
 
-            <h3>Ingrédients sélectionnés :</h3>
-            <ul>
-                {% for item_details in items_details %}
-                    <li>
-                        {{ item_details['name'] }} :
-                        <ul>
-                            <li>Énergie: {{ item_details['energy'] }}</li>
-                            <li>Protéine: {{ item_details['protein'] }}</li>
-                            <li>{{ item_details['level1_column'] }}: {{ item_details[item_details['level1_column']] }}</li>  <!-- Afficher le nom et la valeur de Demarrage1/Croissance1 -->
-                            <li>{{ item_details['level2_column'] }}: {{ item_details[item_details['level2_column']] }}</li>  <!-- Afficher le nom et la valeur de Demarrage2/Croissance2 -->
-                        </ul>
-                    </li>
-                {% endfor %}
-            </ul>
-            
-            
-            
-            <a href="/" class="btn btn-success">Revenir à l'accueil</a>
-        </div>
-    </main>
+                <h3>
+                    Tableau de Composition
+                </h3>
+                
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Ingrédients</th>
+                            <th>Quantité (kg)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item_details in items_details %}
+                            <tr>
+                                <td>{{ item_details['name'] }}</td>
+                                <td>{{ item_details['quantity'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                
+                
+                
+                
+                <a href="/" class="btn btn-success">Revenir à l'accueil</a>
+            </div>
+        </main>
 </body>
 
 
