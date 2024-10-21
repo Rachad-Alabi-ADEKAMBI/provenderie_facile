@@ -114,6 +114,8 @@ def calcul():
             item_details['level2_column'] = level2_column
             items_details.append(item_details)
 
+            
+
     cursor.close()
     conn.close()
 
